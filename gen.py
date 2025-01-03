@@ -173,7 +173,7 @@ for n in range(int(number)):
 
     # the rest of cache accesses
     for i in range(16, 60):
-        value = random.choices([1, 0], weights=[100, 0], k=1)[0]       # random determinator
+        value = random.choices([1, 0], weights=[60, 40], k=1)[0]       # random determinator
         #print(value)
         if value == 0:                      # 0 -> access other cache lines that have not been accessed
             temp = notAccessed.pop(0)
