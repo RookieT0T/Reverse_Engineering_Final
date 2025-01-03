@@ -12,7 +12,7 @@ RP=FIFORP
 
 prefix="./startEnd/trial_"
 end=".log"
-for i in {0..9}; do
+for i in {0..39}; do
     file="${prefix}${i}${end}"
     echo "File read is $file"
 
