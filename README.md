@@ -4,7 +4,7 @@
 1. **`testbench` Directory**: Contains all 40 micro-testbenches, each with 60 cache accesses.
 2. **`gen.py`**: Automatically generates the `testbench` directory and the 40 micro-testbenches within it.
 3. **`hitMiss.sh`**: A shell script for generating and filtering the correct TCC cache hits/misses in gem5.
-4. **`startEnd.sh`**: A shell script for generating log files containing the debug start time and debug end time, which serve as internal fields for commands in `hitMiss.sh`.
+4. **`startEnd.sh`**: A shell script for generating log files containing the debug start time and debug end time for each micro-testbenche, which serve as internal fields for commands in `hitMiss.sh`.
 
 ---
 
@@ -34,19 +34,19 @@ To set up the project, follow these steps:
 ## How to Run
 1. **Update the Replacement Policy**:
    - In both `startEnd.sh` and `hitMiss.sh`, update the variable `RP` to the cache replacement policy you want to use for configuring gem5.
-   - Example: To test `LFURP`, set `RP=LFURP`. The default is `RP=FIFORP`.
+   - Example: To confgrue gem5 with `LFURP`, set `RP=LFURP`. The default is `RP=FIFORP`.
 2. **Run Testbenches**:
    - The iterator `i` is already set to range from 0 to 39 (covering all 40 micro-testbenches): `for i in {0..39}; do`.
    - Make sure you are in the gem5 root directory and run:
      - `./startEnd.sh`: Sequentially runs all 40 testbenches to acquire their debug start time and end time.
      - After 2 or 3 testbenches have completed (i.e., their debug data is available in the `startEnd` directory), run:
-       - `./hitMiss.sh`: Generates and collects cache hits/misses for each micro-testbench.
-     - Note: You can overlap these steps to save time. Once some debug data is available from `startEnd.sh`, you can start running `hitMiss.sh`.
+       - `./hitMiss.sh`: Generates all cache hits/misses and filter TCC cache hits/misses for each micro-testbench.
+     - Note: You can overlap these steps to save time. Once some debug data is available from `startEnd.sh`, you can start running `hitMiss.sh`. Like a pipeline!
 3. **Wait for Completion**.
 
 ---
 
 ## Notes
 - Checking `config.ini` in the `m5out` directory is good practice for verifying the cache replacement policy you are testing.
-- You can run multiple gem5 instances configured with different cache replacement policies on the same set of micro-testbenches to speed up testing.
-  - **Recommended**: Run only 2 gem5 instances simultaneously to avoid overloading the shared 12-core CPU, which is shared among all research groups. Running too many gem5 instances simultaneously will slow down execution.
+- You can run multiple gem5 instances configured with different cache replacement policies on the same set of micro-testbenches to speed up testing. Think about the parallelism!
+  - **Recommended**: Run only 2 to 3 gem5 instances simultaneously to avoid overloading the shared 12-core CPU, which is shared among all people in the research group. Running too many gem5 instances simultaneously will slow down execution of each gem5. Running too many gem5 instances may cause ssh disconnections, which takes extra effort of resuming executions.
